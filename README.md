@@ -1,4 +1,4 @@
-Using Python to call the API ZABBIX interface, in the Baidu map shows the status of different regions of the firewall.
+Using Python to call the API ZABBIX interface, showing the status of different regions of the firewall in the Baidu map.
 -------------------------------------
 
 These code need python 2.7.9.
