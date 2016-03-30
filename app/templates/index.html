@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+	body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+	</style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=kRO64k2Hkndy8NqdV30A2i8c"></script>
+	<title>地图展示</title>
+</head>
+<body>
+	<div id="allmap"></div>
+</body>
+</html>
+<script type="text/javascript">
+	var map = new BMap.Map("allmap", {minZoom:5,maxZoom:18});
+	map.centerAndZoom(new BMap.Point(107.732, 33.757), 6);
+	map.addControl(new BMap.MapTypeControl());
+	map.enableScrollWheelZoom(true);
+	var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
+	var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+	map.addControl(top_left_control);        
+	map.addControl(top_left_navigation);  
+        var data_info = {{ site_info|safe }};
+	var data_value = {{ showvalue|safe }};
+	for(var i= 0;i<data_info.length;i++){
+		var minute = parseInt((parseInt(data_value['11'][i][1]) / 60) % 60);
+		var hour = parseInt(((parseInt(data_value['11'][i][1]) / 60) / 60) % 24);
+		var day = parseInt(((parseInt(data_value['11'][i][1]) / 60) / 60) / 24);
+		var networkflow = data_value['11'][i][2];
+		var networkflow1 = networkflow.toFixed(3);
+		var point = new BMap.Point(data_info[i][0],data_info[i][1]);
+		var content1 = data_info[i][2] + networkflow1 + " Mbps";
+        	var content2 = "在线时间:"+day+"天"+hour+"小时"+minute+"分钟";
+		var content3 = content1 + '<br>' + content2;
+		var label = new BMap.Label(content3, {offset:new BMap.Size(27,-10)});
+		if (parseInt(data_value['11'][i][0])==0 || networkflow1 == 0.000){
+			var myIcon = new BMap.Icon('{{ url_for('static', filename='hs.png')}}', new BMap.Size(100,100));
+			var marker = new BMap.Marker(point, {icon:myIcon});
+			//marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+		}
+		else{
+			var myIcon = new BMap.Icon('{{ url_for('static', filename='ls.png')}}', new BMap.Size(100,100));
+			var marker = new BMap.Marker(point, {icon:myIcon});
+		}
+		map.addOverlay(marker);
+		marker.setLabel(label);
+		
+	}
+	function myrefresh() {
+		window.location.reload();
+	}
+	setTimeout('myrefresh()',60000);
+
+</script>
