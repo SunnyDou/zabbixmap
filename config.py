@@ -8,12 +8,13 @@ class Config:
     url = "http://IP/zabbix/api_jsonrpc.php"                   #The IP address is the server of zabbix.
     header = {"Content-Type": "application/json"}
     hash_password = 'xxxxxxxxxxxx'
-    groupid = ['1']                                            #groupid
+    groupid = ['11']                                            #groupid
     listofhost = [
-        zabbixserver                                           #the hosts list which you want to show.
+        'BEIJING'                                           #the hosts list which you want to show.
     ]
     site_info = [
         #[116.445943, 39.972524, "Descriptive text"]
+        [116.445943, 39.972524, "地址：北京<br>当前网络流量为："]
     ]
 
     @staticmethod
